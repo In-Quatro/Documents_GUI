@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>409</width>
-    <height>543</height>
+    <height>550</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,7 +23,7 @@
       <x>0</x>
       <y>0</y>
       <width>411</width>
-      <height>531</height>
+      <height>501</height>
      </rect>
     </property>
     <property name="font">
@@ -38,7 +38,7 @@
      <attribute name="title">
       <string>Акт</string>
      </attribute>
-     <widget class="QPushButton" name="b_browse_template">
+     <widget class="QPushButton" name="b_browse_template_acts">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -51,7 +51,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output">
+     <widget class="QLineEdit" name="le_path_output_acts">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -64,7 +64,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_create">
+     <widget class="QLabel" name="l_folder_output_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -83,7 +83,7 @@
        <string>Папка для созданных актов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_start">
+     <widget class="QPushButton" name="b_create_acts">
       <property name="geometry">
        <rect>
         <x>137</x>
@@ -105,7 +105,7 @@
        <string>Создать</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_template">
+     <widget class="QLabel" name="l_template_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -124,7 +124,7 @@
        <string>Шаблон для актов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output">
+     <widget class="QPushButton" name="b_browse_output_acts">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -137,7 +137,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_template">
+     <widget class="QLineEdit" name="le_path_template_acts">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -150,7 +150,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="l_csv_data">
+     <widget class="QLabel" name="l_csv_data_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -169,7 +169,7 @@
        <string>Данные для актов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_csv_data">
+     <widget class="QPushButton" name="b_browse_csv_data_acts">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -182,7 +182,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_csv_data">
+     <widget class="QLineEdit" name="le_path_csv_data_acts">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -213,22 +213,6 @@
        <string>Открыть папку</string>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressBar">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>470</y>
-        <width>365</width>
-        <height>15</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
      <widget class="QLabel" name="l_create_act">
       <property name="geometry">
        <rect>
@@ -249,7 +233,7 @@
        <string>СОЗДАТЬ АКТЫ</string>
       </property>
      </widget>
-     <widget class="Line" name="line">
+     <widget class="Line" name="line_1_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -262,7 +246,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="l_get_data">
+     <widget class="QLabel" name="l_get_data_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -282,7 +266,7 @@
        <string>ПОЛУЧИТЬ ДАННЫЕ</string>
       </property>
      </widget>
-     <widget class="Line" name="line_2">
+     <widget class="Line" name="line_2_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -295,7 +279,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_acts">
+     <widget class="QLabel" name="l_folder_input_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -314,7 +298,7 @@
        <string>Папка с актами</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_acts_analysis">
+     <widget class="QLineEdit" name="le_path_analysis_acts">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -327,7 +311,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_acts">
+     <widget class="QPushButton" name="b_browse_input_acts">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -340,7 +324,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_save_data">
+     <widget class="QLabel" name="l_folder_save_data_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -359,7 +343,7 @@
        <string>Папка для сохранения файла с данными</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output_csv_acts">
+     <widget class="QLineEdit" name="le_path_output_csv_data_acts">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -372,7 +356,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_data">
+     <widget class="QPushButton" name="b_browse_output_csv_data_acts">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -385,7 +369,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_read_acts">
+     <widget class="QPushButton" name="b_analysis_acts">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -404,7 +388,7 @@
        <string>Обработать</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_data_acts">
+     <widget class="QPushButton" name="b_open_folder_csv_data_acts">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -504,7 +488,7 @@
      <attribute name="title">
       <string>Титульный лист</string>
      </attribute>
-     <widget class="QLineEdit" name="le_path_acts_analysis_2">
+     <widget class="QLineEdit" name="le_path_title_page_analysis">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -517,7 +501,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_data_acts_3">
+     <widget class="QPushButton" name="b_open_folder_data_title_page">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -535,7 +519,7 @@
        <string>Открыть папку</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_2">
+     <widget class="QPushButton" name="b_open_folder_title_page">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -553,7 +537,7 @@
        <string>Открыть папку</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_read_acts_3">
+     <widget class="QPushButton" name="b_read_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -572,7 +556,7 @@
        <string>Обработать</string>
       </property>
      </widget>
-     <widget class="Line" name="line_4">
+     <widget class="Line" name="line_1_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -585,7 +569,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="l_template_4">
+     <widget class="QLabel" name="l_template_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -604,7 +588,7 @@
        <string>Шаблон для титульных листов</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_save_data_2">
+     <widget class="QLabel" name="l_folder_save_data_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -623,7 +607,7 @@
        <string>Папка для сохранения файла с данными</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output_2">
+     <widget class="QLineEdit" name="le_path_output_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -636,7 +620,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_csv_data_2">
+     <widget class="QLineEdit" name="le_path_csv_data_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -649,23 +633,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressBar_3">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>440</y>
-        <width>365</width>
-        <height>15</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="b_start_2">
+     <widget class="QPushButton" name="b_create_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -687,7 +655,7 @@
        <string>Создать</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output_csv_acts_2">
+     <widget class="QLineEdit" name="le_path_output_csv_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -700,7 +668,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_2">
+     <widget class="QPushButton" name="b_browse_output_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -713,7 +681,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_create_act_3">
+     <widget class="QLabel" name="l_create_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -733,7 +701,7 @@
        <string>СОЗДАТЬ ТИТУЛЬНЫЕ ЛИСТЫ</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_template_4">
+     <widget class="QLineEdit" name="le_path_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -746,7 +714,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="Line" name="line_5">
+     <widget class="Line" name="line_2_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -759,7 +727,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_acts_2">
+     <widget class="QLabel" name="l_folder_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -778,7 +746,7 @@
        <string>Папка с актами</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_csv_data_2">
+     <widget class="QLabel" name="l_csv_data_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -797,7 +765,7 @@
        <string>Данные для титульных листов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_csv_data_2">
+     <widget class="QPushButton" name="b_browse_csv_data_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -810,7 +778,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_acts_2">
+     <widget class="QPushButton" name="b_browse_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -823,7 +791,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_create_2">
+     <widget class="QLabel" name="l_folder_create_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -842,7 +810,7 @@
        <string>Папка для созданных титульных листов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_data_2">
+     <widget class="QPushButton" name="b_browse_output_data_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -855,7 +823,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_get_data_2">
+     <widget class="QLabel" name="l_get_data_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -875,7 +843,7 @@
        <string>ПОЛУЧИТЬ ДАННЫЕ</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_template_4">
+     <widget class="QPushButton" name="b_browse_template_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -932,7 +900,7 @@
        <string>Данные с заявками</string>
       </property>
      </widget>
-     <widget class="Line" name="line_6">
+     <widget class="Line" name="line_1_incedents">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1003,22 +971,6 @@
        </rect>
       </property>
      </widget>
-     <widget class="QProgressBar" name="progressBar_4">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>190</y>
-        <width>365</width>
-        <height>15</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
      <widget class="QPushButton" name="b_open_folder_data_acts_4">
       <property name="geometry">
        <rect>
@@ -1074,7 +1026,7 @@
      <attribute name="title">
       <string>PDF</string>
      </attribute>
-     <widget class="QLabel" name="l_create_act_2">
+     <widget class="QLabel" name="l_create_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1094,7 +1046,7 @@
        <string>ОБРАБОТАТЬ PDF</string>
       </property>
      </widget>
-     <widget class="Line" name="line_3">
+     <widget class="Line" name="line_1_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1107,40 +1059,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QTextBrowser" name="textBrowser">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>194</y>
-        <width>367</width>
-        <height>261</height>
-       </rect>
-      </property>
-      <property name="html">
-       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
-&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
-p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Century Gothic'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-      </property>
-     </widget>
-     <widget class="QProgressBar" name="progressBar_2">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>470</y>
-        <width>365</width>
-        <height>15</height>
-       </rect>
-      </property>
-      <property name="value">
-       <number>0</number>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="le_path_template_2">
+     <widget class="QLineEdit" name="le_path_input_pdf">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -1153,7 +1072,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_template_2">
+     <widget class="QPushButton" name="b_browse_input_pdf">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -1166,7 +1085,7 @@ p, li { white-space: pre-wrap; }
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_template_2">
+     <widget class="QLabel" name="l_path_input_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1185,7 +1104,7 @@ p, li { white-space: pre-wrap; }
        <string>Папка для обработки</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_template_3">
+     <widget class="QLineEdit" name="le_path_output_pdf">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -1198,7 +1117,7 @@ p, li { white-space: pre-wrap; }
        </rect>
       </property>
      </widget>
-     <widget class="QLabel" name="l_template_3">
+     <widget class="QLabel" name="l_path_output_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -1217,7 +1136,7 @@ p, li { white-space: pre-wrap; }
        <string>Папка для готовых файлов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_template_3">
+     <widget class="QPushButton" name="b_browse_output_pdf">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -1230,12 +1149,12 @@ p, li { white-space: pre-wrap; }
        <string>...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_read_acts_2">
+     <widget class="QPushButton" name="b_rotate_pdf">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>120</x>
         <y>150</y>
-        <width>151</width>
+        <width>111</width>
         <height>23</height>
        </rect>
       </property>
@@ -1249,12 +1168,12 @@ p, li { white-space: pre-wrap; }
        <string>Обработать</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_data_acts_2">
+     <widget class="QPushButton" name="b_open_folder_new_pdf">
       <property name="geometry">
        <rect>
-        <x>200</x>
+        <x>240</x>
         <y>150</y>
-        <width>151</width>
+        <width>111</width>
         <height>23</height>
        </rect>
       </property>
@@ -1267,7 +1186,62 @@ p, li { white-space: pre-wrap; }
        <string>Открыть папку</string>
       </property>
      </widget>
+     <widget class="QLabel" name="l_stage_pdf">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>155</y>
+        <width>41</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Century Gothic</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Этап</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="sb_stage_pdf">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>150</y>
+        <width>42</width>
+        <height>22</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QTextEdit" name="te_pdf">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>190</y>
+        <width>381</width>
+        <height>271</height>
+       </rect>
+      </property>
+     </widget>
     </widget>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>510</y>
+      <width>365</width>
+      <height>15</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>

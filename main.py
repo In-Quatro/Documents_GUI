@@ -1,63 +1,139 @@
 import subprocess
 
-from PyQt5 import QtCore, QtGui, QtWidgets, QtQuickWidgets, uic
-from PyQt5.QtCore import QThread, pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QMainWindow,
-                             QTableWidgetItem, QDialog, QFileDialog,
-                              QPushButton)
+from PyQt5 import uic
+
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 import sys
 from functools import partial
-from PyPDF2 import PdfFileReader, PdfFileWriter
 
 from acts_create import *
 from acts_analysis import *
+from pdf_rotation import *
 
 
 class MainWindow(QMainWindow):
     """"Главное окно."""
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi(self.resource_path('open.ui'), self)
-        self.input_folder = None
-        self.output_folder = None
-        self.output_excel_folder = None
-        self.folder_template_excel = None
-        self.csv_data = None
-
-        self.path_acts = None
-        self.path_output_csv_acts = None
-
+        uic.loadUi(self.resource_path('ui/open.ui'), self)
         # Создание актов
-        self.b_browse_template.clicked.connect(partial(
-            self.get_file, 'template_excel', 'Excel Files (*.xlsx)'))
-        self.b_browse_csv_data.clicked.connect(partial(
-            self.get_file, 'csv_data', 'CSV Files (*.csv)'))
-        self.b_browse_output.clicked.connect(partial(
-            self.get_directory, 'output_excel'))
-        self.b_start.clicked.connect(self.start_acts_create)
+        self.path_template_acts = None
+        self.path_csv_data_acts = None
+        self.path_output_acts = None
+        self.b_create_acts.setEnabled(False)
+
+        self.b_browse_template_acts.clicked.connect(partial(
+            self.get_file, 'template_acts', 'Excel Files (*.xlsx)'))
+        self.b_browse_csv_data_acts.clicked.connect(partial(
+            self.get_file, 'csv_data_acts', 'CSV Files (*.csv)'))
+        self.b_browse_output_acts.clicked.connect(partial(
+            self.get_directory, 'output_acts'))
+
+        # Кнопки для Создания актов
+        self.b_create_acts.clicked.connect(self.start_acts_create)
         self.b_open_folder.clicked.connect(self.open_folder)
 
         # Обработка актов
-        self.b_browse_output_data.clicked.connect(partial(
-            self.save_file, 'save_file',))
-        self.b_browse_acts.clicked.connect(partial(
-            self.get_directory, 'input_acts'))
-        self.b_open_folder_data_acts.clicked.connect(self.open_folder_2)
+        self.path_analysis_acts = None
+        self.path_output_csv_data_acts = None
+        self.b_analysis_acts.setEnabled(False)
 
-        self.b_read_acts.clicked.connect(self.start_acts_analysis)
+        self.b_browse_input_acts.clicked.connect(partial(
+            self.get_directory, 'save_csv_file_acts',))
+        self.b_browse_output_csv_data_acts.clicked.connect(partial(
+            self.save_file, 'save_csv_file_folder_acts'))
+
+        # Кнопки для сохранения данных из актов _xlsx_ файлов в _csv_ файл
+        self.b_open_folder_csv_data_acts.clicked.connect(self.open_folder_2)
+        self.b_analysis_acts.clicked.connect(self.start_acts_analysis)
+
+        # Обработка PDF
+        self.path_input_pdf: str = None
+        self.path_output_pdf: str = None
+        self.b_rotate_pdf.setEnabled(False)
+
+        self.b_browse_input_pdf.clicked.connect(partial(
+            self.get_directory, 'input_pdf'))
+        self.b_browse_output_pdf.clicked.connect(partial(
+            self.get_directory, 'output_pdf'))
+
+        # Кнопки для обработки _pdf_ файлов
+        self.b_rotate_pdf.clicked.connect(self.start_pdf_rotation)
+        self.b_open_folder_new_pdf.clicked.connect(self.open_folder_3)
 
         self.actions = {
-            'template_excel':
-                ['folder_template_excel', self.le_path_template],
-            'csv_data':
-                ['csv_data', self.le_path_csv_data],
-            'output_excel':
-                ['output_excel_folder', self.le_path_output],
-            'save_file':
-                ['path_output_csv_acts', self.le_path_output_csv_acts],
-            'input_acts':
-                ['path_acts', self.le_path_acts_analysis],
+            #  Создание актов _xlsx_ из _csv_ файла с данными
+            'template_acts':
+                ['path_template_acts',
+                 self.le_path_template_acts],
+            'csv_data_acts':
+                ['path_csv_data_acts',
+                 self.le_path_csv_data_acts],
+            'output_acts':
+                ['path_output_acts',
+                 self.le_path_output_acts],
+
+            # Сохранения данных из актов _xlsx_ файлов в _csv_ файл
+            'save_csv_file_acts':
+                ['path_analysis_acts',
+                 self.le_path_analysis_acts],
+            'save_csv_file_folder_acts':
+                ['path_output_csv_data_acts',
+                 self.le_path_output_csv_data_acts],
+
+            # Обработка файлов _pdf_
+            'input_pdf':
+                ['path_input_pdf',
+                 self.le_path_input_pdf],
+            'output_pdf':
+                ['path_output_pdf',
+                 self.le_path_output_pdf]
         }
+
+    # def check_button_create_acts_state(self):
+    #     self.b_create_acts.setEnabled(
+    #         all([
+    #             self.path_template_acts,
+    #             self.path_csv_data_acts,
+    #             self.path_output_acts
+    #         ])
+    #     )
+    #
+    # def check_button_read_acts_state(self):
+    #     self.b_analysis_acts.setEnabled(
+    #         all([
+    #             self.path_analysis_acts,
+    #             self.path_output_csv_data_acts,
+    #         ])
+    #     )
+    #
+    # def check_button_rotate_pdf_state(self):
+    #     self.b_rotate_pdf.setEnabled(
+    #         all([
+    #             self.path_input_pdf,
+    #             self.path_output_pdf,
+    #         ])
+    #     )
+
+    def check_button_state(self, button, conditions):
+        button.setEnabled(all(conditions))
+
+    def check_buttons(self):
+        self.check_button_state(self.b_create_acts, [
+            self.path_template_acts,
+            self.path_csv_data_acts,
+            self.path_output_acts
+        ])
+
+        self.check_button_state(self.b_analysis_acts, [
+            self.path_analysis_acts,
+            self.path_output_csv_data_acts,
+        ])
+
+        self.check_button_state(self.b_rotate_pdf, [
+            self.path_input_pdf,
+            self.path_output_pdf,
+        ])
 
     def update_status(self, msg):
         """Изменение сообщения статусбара."""
@@ -77,10 +153,11 @@ class MainWindow(QMainWindow):
     def get_directory(self, action):
         """Выбор папки."""
         dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
-
         if action in self.actions:
             setattr(self, self.actions[action][0], dirlist)
             self.actions[action][1].setText(dirlist)
+            self.check_buttons()
+
 
     def get_file(self, action, format_file):
         """Выбор файла."""
@@ -93,45 +170,18 @@ class MainWindow(QMainWindow):
         if action in self.actions:
             setattr(self, self.actions[action][0], filename)
             self.actions[action][1].setText(filename)
+            self.check_buttons()
 
     def save_file(self, action):
         """Сохранить файл."""
         filename, ok = QFileDialog.getSaveFileName(self,
-                                                  "Сохранить файл",
-                                                  ".",
-                                                  'CSV Files (*.csv)')
+                                                   "Сохранить файл",
+                                                   ".",
+                                                   'CSV Files (*.csv)')
         if action in self.actions:
             setattr(self, self.actions[action][0], filename)
             self.actions[action][1].setText(filename)
-
-
-    def page_rotation(self):
-        """Поворот страниц кроме 1-ой."""
-        self.statusbar.showMessage('Начинаю обработку...')
-        stage_num = 4
-        input_dir = self.input_folder
-        output_dir = self.output_folder
-        count = 0
-        directory = os.listdir(input_dir)
-        for file in directory:
-            if Path(file).suffix == '.pdf':
-                pdf_path = Path(input_dir, file)
-                pdf_reader = PdfFileReader(pdf_path)
-                pdf_writer = PdfFileWriter()
-
-            for page in range(pdf_reader.getNumPages()):
-                pages = pdf_reader.getPage(page)
-                if page != 0:
-                    pages.rotateClockwise(90)
-                pdf_writer.addPage(pages)
-
-            file_name = Path(file).stem
-            output_file_name = f'{file_name} - {stage_num}.pdf'
-            output_file_path = os.path.join(output_dir, output_file_name)
-            with open(output_file_path, 'wb') as output_file:
-                pdf_writer.write(output_file)
-            count += 1
-        self.statusbar.showMessage(f'Готово. Обработано файлов - {count}')
+            self.check_buttons()
 
     def update_progress(self, value):
         """Прогресбар."""
@@ -140,7 +190,7 @@ class MainWindow(QMainWindow):
     def open_folder(self):
         """Открытие папки."""
         if self.output_excel_folder:
-            normalized_path = os.path.normpath(self.output_excel_folder)
+            normalized_path = Path(self.output_excel_folder)
             subprocess.Popen(['explorer', normalized_path])
         else:
             self.update_status('Необходимо выбрать папку')
@@ -153,45 +203,49 @@ class MainWindow(QMainWindow):
         else:
             self.update_status('Необходимо выбрать папку')
 
+    def open_folder_3(self):
+        """Открытие папки."""
+        if self.path_output_pdf:
+            path_pdf = Path(self.path_output_pdf)
+            subprocess.Popen(['explorer', path_pdf])
+        else:
+            self.update_status('Необходимо выбрать папку')
+
     def start_acts_create(self):
         """Запуск создания актов EXCEL."""
         template_path = str(self.folder_template_excel)
         folder_name = str(self.output_excel_folder)
         csv_data = str(self.csv_data)
 
-        if all([
-            self.folder_template_excel,
-            self.output_excel_folder,
-            self.csv_data
-        ]):
-            self.thread = ActsCreate(template_path, folder_name, csv_data)
-            self.thread.status_update.connect(self.update_status)
-            self.thread.progress_update.connect(self.update_progress)
-            self.thread.start()
-        else:
-            self.update_status('Проверьте что выбраны все поля')
+        self.thread = ActsCreate(template_path, folder_name, csv_data)
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
+
 
     def start_acts_analysis(self):
         """Запуск обработки актов EXCEL."""
         path_acts = str(self.path_acts)
         path_output_csv_acts = str(self.path_output_csv_acts)
         stage = self.cb_stage
-        try:
-            if all([
-                self.path_acts,
-                self.path_output_csv_acts,
-            ]):
-                # print('YES')
-                self.thread = ActsAnalysis(
-                    path_acts, path_output_csv_acts, stage)
-                self.thread.status_update.connect(self.update_status)
-                self.thread.progress_update.connect(self.update_progress)
-                self.thread.start()
-            else:
-                # print('NO')
-                self.update_status('Проверьте что выбраны все поля')
-        except Exception as e:
-            print(e)
+
+        self.thread = ActsAnalysis(
+            path_acts, path_output_csv_acts, stage)
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
+
+    def start_pdf_rotation(self):
+        """Запуск обработки PDF документов."""
+        path_input_pdf = str(self.path_input_pdf)
+        path_output_pdf = str(self.path_output_pdf)
+        stage = self.sb_stage_pdf
+        te_pdf = self.te_pdf
+
+        self.thread = PdfRotation(path_input_pdf, path_output_pdf, stage, te_pdf)
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
 
 
 if __name__ == '__main__':
