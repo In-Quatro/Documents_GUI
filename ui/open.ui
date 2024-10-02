@@ -488,7 +488,7 @@
      <attribute name="title">
       <string>Титульный лист</string>
      </attribute>
-     <widget class="QLineEdit" name="le_path_title_page_analysis">
+     <widget class="QLineEdit" name="le_path_analysis_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -501,7 +501,7 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_data_title_page">
+     <widget class="QPushButton" name="b_open_folder_csv_data_title_page">
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -537,7 +537,7 @@
        <string>Открыть папку</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_read_title_page">
+     <widget class="QPushButton" name="b_analysis_title_page">
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -655,7 +655,7 @@
        <string>Создать</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output_csv_title_page">
+     <widget class="QLineEdit" name="le_path_output_csv_data_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -778,7 +778,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_title_page">
+     <widget class="QPushButton" name="b_browse_input_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -810,7 +810,7 @@
        <string>Папка для созданных титульных листов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_data_title_page">
+     <widget class="QPushButton" name="b_browse_output_csv_data_title_page">
       <property name="geometry">
        <rect>
         <x>360</x>

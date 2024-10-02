@@ -1,19 +1,19 @@
-import subprocess
-
 from PyQt5 import uic
-
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+
 import sys
 from functools import partial
 
 from acts_create import *
 from acts_analysis import *
 from pdf_rotation import *
+from title_page_analysis import *
 from title_page import *
 
 
 class MainWindow(QMainWindow):
     """"Главное окно."""
+
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi(self.resource_path('ui/open.ui'), self)
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         self.b_analysis_acts.setEnabled(False)
 
         self.b_browse_input_acts.clicked.connect(partial(
-            self.get_directory, 'save_csv_file_acts',))
+            self.get_directory, 'save_csv_file_acts', ))
         self.b_browse_output_csv_data_acts.clicked.connect(partial(
             self.save_file, 'save_csv_file_folder_acts'))
 
@@ -64,7 +64,6 @@ class MainWindow(QMainWindow):
 
         self.b_clear_te_pdf.clicked.connect(self.clear_te_pdf)
 
-
         # Создание титульных листов
         self.path_template_title_page = None
         self.path_csv_data_title_page = None
@@ -81,6 +80,22 @@ class MainWindow(QMainWindow):
         self.b_create_title_page.clicked.connect(self.start_title_page_create)
         self.b_open_folder_title_page.clicked.connect(self.open_folder_4)
         # self.b_create_title_page.clicked.connect(self.test_path)
+
+        # Обработка титульных листов
+        self.path_analysis_title_page = None
+        self.path_output_csv_data_title_page = None
+        self.b_analysis_title_page.setEnabled(False)
+
+        self.b_browse_input_title_page.clicked.connect(partial(
+            self.get_directory, 'save_csv_file_title_page', ))
+        self.b_browse_output_csv_data_title_page.clicked.connect(partial(
+            self.save_file, 'save_csv_file_folder_title_page'))
+
+        # Кнопки для сохранения данных из актов _docx_ файлов в _csv_ файл
+        self.b_analysis_title_page.clicked.connect(
+            self.start_title_page_analysis)
+        self.b_open_folder_csv_data_title_page.clicked.connect(
+            self.open_folder_5)
 
         self.actions = {
             #  Создание актов _xlsx_ из _csv_ файла с данными
@@ -120,6 +135,14 @@ class MainWindow(QMainWindow):
             'output_title_page':
                 ['path_output_title_page',
                  self.le_path_output_title_page],
+
+            # Сохранения данных из актов _xlsx_ файлов в _csv_ файл
+            'save_csv_file_title_page':
+                ['path_analysis_title_page',
+                 self.le_path_analysis_title_page],
+            'save_csv_file_folder_title_page':
+                ['path_output_csv_data_title_page',
+                 self.le_path_output_csv_data_title_page],
         }
 
     # def check_button_create_acts_state(self):
@@ -171,6 +194,11 @@ class MainWindow(QMainWindow):
             self.path_template_title_page,
             self.path_csv_data_title_page,
             self.path_output_title_page
+        ])
+
+        self.check_button_state(self.b_analysis_title_page, [
+            self.path_analysis_title_page,
+            self.path_output_csv_data_title_page,
         ])
 
     def clear_te_pdf(self):
@@ -258,6 +286,14 @@ class MainWindow(QMainWindow):
         else:
             self.update_status('Необходимо выбрать папку')
 
+    def open_folder_5(self):
+        """Открытие папки."""
+        if self.path_output_csv_data_title_page:
+            path_csv = Path(self.path_output_csv_data_title_page).parent
+            subprocess.Popen(['explorer', path_csv])
+        else:
+            self.update_status('Необходимо выбрать папку')
+
     def start_acts_create(self):
         """Запуск создания актов EXCEL."""
         template_path = str(self.path_template_acts)
@@ -276,7 +312,10 @@ class MainWindow(QMainWindow):
         stage = self.cb_stage_acts
 
         self.thread = ActsAnalysis(
-            path_acts, path_output_csv_acts, stage)
+            path_acts,
+            path_output_csv_acts,
+            stage
+        )
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
@@ -288,14 +327,18 @@ class MainWindow(QMainWindow):
         stage = self.sb_stage_pdf
         te_pdf = self.te_pdf
 
-        self.thread = PdfRotation(path_input_pdf, path_output_pdf, stage, te_pdf)
+        self.thread = PdfRotation(
+            path_input_pdf,
+            path_output_pdf,
+            stage,
+            te_pdf
+        )
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
     def start_title_page_create(self):
         try:
-            print('Title page')
             path_template_title_page = str(self.path_template_title_page)
             path_csv_data_title_page = str(self.path_csv_data_title_page)
             path_output_title_page = str(self.path_output_title_page)
@@ -304,7 +347,6 @@ class MainWindow(QMainWindow):
                 path_template_title_page,
                 path_csv_data_title_page,
                 path_output_title_page
-
             )
             self.thread.status_update.connect(self.update_status)
             self.thread.progress_update.connect(self.update_progress)
@@ -312,10 +354,24 @@ class MainWindow(QMainWindow):
         except Exception as e:
             print(e)
 
+    def start_title_page_analysis(self):
+        try:
+            path_analysis_title_page = str(self.path_analysis_title_page)
+            path_output_csv_data_title_page = str(
+                self.path_output_csv_data_title_page)
+
+            self.thread = TitlePageAnalysis(path_analysis_title_page,
+                                            path_output_csv_data_title_page)
+            self.thread.status_update.connect(self.update_status)
+            self.thread.progress_update.connect(self.update_progress)
+            self.thread.start()
+
+        except Exception as e:
+            print(e)
+
     def test_path(self):
-        print(f'{self.path_template_title_page=}')
-        print(f'{self.path_csv_data_title_page=}')
-        print(f'{self.path_output_title_page=}')
+        print(f'{self.path_analysis_title_page=}')
+        print(f'{self.path_output_csv_data_title_page=}')
 
 
 if __name__ == '__main__':

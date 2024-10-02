@@ -22,7 +22,6 @@ class ActsAnalysis(QThread):
 
         """Главная функция."""
         try:
-            # print(self.stage.currentText())
             files = os.listdir(self.path_acts)
             if not files:
                 self.status_update.emit('Нет файлов в папке для обработки')
