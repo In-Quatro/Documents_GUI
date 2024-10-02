@@ -9,6 +9,7 @@ from functools import partial
 from acts_create import *
 from acts_analysis import *
 from pdf_rotation import *
+from title_page import *
 
 
 class MainWindow(QMainWindow):
@@ -63,6 +64,24 @@ class MainWindow(QMainWindow):
 
         self.b_clear_te_pdf.clicked.connect(self.clear_te_pdf)
 
+
+        # Создание титульных листов
+        self.path_template_title_page = None
+        self.path_csv_data_title_page = None
+        self.path_output_title_page = None
+        self.b_create_title_page.setEnabled(False)
+
+        self.b_browse_template_title_page.clicked.connect(partial(
+            self.get_file, 'template_title_page', 'Word Files (*.docx)'))
+        self.b_browse_csv_data_title_page.clicked.connect(partial(
+            self.get_file, 'csv_data_title_page', 'CSV Files (*.csv)'))
+        self.b_browse_output_title_page.clicked.connect(partial(
+            self.get_directory, 'output_title_page'))
+
+        self.b_create_title_page.clicked.connect(self.start_title_page_create)
+        self.b_open_folder_title_page.clicked.connect(self.open_folder_4)
+        # self.b_create_title_page.clicked.connect(self.test_path)
+
         self.actions = {
             #  Создание актов _xlsx_ из _csv_ файла с данными
             'template_acts':
@@ -89,7 +108,18 @@ class MainWindow(QMainWindow):
                  self.le_path_input_pdf],
             'output_pdf':
                 ['path_output_pdf',
-                 self.le_path_output_pdf]
+                 self.le_path_output_pdf],
+
+            #  Создание актов _docx_ из _csv_ файла с данными
+            'template_title_page':
+                ['path_template_title_page',
+                 self.le_path_template_title_page],
+            'csv_data_title_page':
+                ['path_csv_data_title_page',
+                 self.le_path_csv_data_title_page],
+            'output_title_page':
+                ['path_output_title_page',
+                 self.le_path_output_title_page],
         }
 
     # def check_button_create_acts_state(self):
@@ -135,6 +165,12 @@ class MainWindow(QMainWindow):
         self.check_button_state(self.b_rotate_pdf, [
             self.path_input_pdf,
             self.path_output_pdf,
+        ])
+
+        self.check_button_state(self.b_create_title_page, [
+            self.path_template_title_page,
+            self.path_csv_data_title_page,
+            self.path_output_title_page
         ])
 
     def clear_te_pdf(self):
@@ -215,6 +251,13 @@ class MainWindow(QMainWindow):
         else:
             self.update_status('Необходимо выбрать папку')
 
+    def open_folder_4(self):
+        """Открытие папки."""
+        if self.path_output_title_page:
+            subprocess.Popen(['explorer', Path(self.path_output_title_page)])
+        else:
+            self.update_status('Необходимо выбрать папку')
+
     def start_acts_create(self):
         """Запуск создания актов EXCEL."""
         template_path = str(self.path_template_acts)
@@ -249,6 +292,30 @@ class MainWindow(QMainWindow):
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
+
+    def start_title_page_create(self):
+        try:
+            print('Title page')
+            path_template_title_page = str(self.path_template_title_page)
+            path_csv_data_title_page = str(self.path_csv_data_title_page)
+            path_output_title_page = str(self.path_output_title_page)
+
+            self.thread = TitlePageCreate(
+                path_template_title_page,
+                path_csv_data_title_page,
+                path_output_title_page
+
+            )
+            self.thread.status_update.connect(self.update_status)
+            self.thread.progress_update.connect(self.update_progress)
+            self.thread.start()
+        except Exception as e:
+            print(e)
+
+    def test_path(self):
+        print(f'{self.path_template_title_page=}')
+        print(f'{self.path_csv_data_title_page=}')
+        print(f'{self.path_output_title_page=}')
 
 
 if __name__ == '__main__':

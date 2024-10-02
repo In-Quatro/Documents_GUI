@@ -701,7 +701,7 @@
        <string>СОЗДАТЬ ТИТУЛЬНЫЕ ЛИСТЫ</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_title_page">
+     <widget class="QLineEdit" name="le_path_template_title_page">
       <property name="enabled">
        <bool>false</bool>
       </property>
