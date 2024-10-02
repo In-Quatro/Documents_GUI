@@ -61,6 +61,8 @@ class MainWindow(QMainWindow):
         self.b_rotate_pdf.clicked.connect(self.start_pdf_rotation)
         self.b_open_folder_new_pdf.clicked.connect(self.open_folder_3)
 
+        self.b_clear_te_pdf.clicked.connect(self.clear_te_pdf)
+
         self.actions = {
             #  Создание актов _xlsx_ из _csv_ файла с данными
             'template_acts':
@@ -135,6 +137,9 @@ class MainWindow(QMainWindow):
             self.path_output_pdf,
         ])
 
+    def clear_te_pdf(self):
+        self.te_pdf.clear()
+
     def update_status(self, msg):
         """Изменение сообщения статусбара."""
         self.statusbar.showMessage(msg)
@@ -157,7 +162,6 @@ class MainWindow(QMainWindow):
             setattr(self, self.actions[action][0], dirlist)
             self.actions[action][1].setText(dirlist)
             self.check_buttons()
-
 
     def get_file(self, action, format_file):
         """Выбор файла."""
@@ -188,17 +192,17 @@ class MainWindow(QMainWindow):
         self.progressBar.setValue(value)
 
     def open_folder(self):
-        """Открытие папки."""
-        if self.output_excel_folder:
-            normalized_path = Path(self.output_excel_folder)
+        """Открытие папки созданных актов."""
+        if self.path_output_acts:
+            normalized_path = Path(self.path_output_acts)
             subprocess.Popen(['explorer', normalized_path])
         else:
             self.update_status('Необходимо выбрать папку')
 
     def open_folder_2(self):
         """Открытие папки."""
-        if self.path_output_csv_acts:
-            path_csv = Path(self.path_output_csv_acts).parent
+        if self.path_output_csv_data_acts:
+            path_csv = Path(self.path_output_csv_data_acts).parent
             subprocess.Popen(['explorer', path_csv])
         else:
             self.update_status('Необходимо выбрать папку')
@@ -213,21 +217,20 @@ class MainWindow(QMainWindow):
 
     def start_acts_create(self):
         """Запуск создания актов EXCEL."""
-        template_path = str(self.folder_template_excel)
-        folder_name = str(self.output_excel_folder)
-        csv_data = str(self.csv_data)
+        template_path = str(self.path_template_acts)
+        csv_data = str(self.path_csv_data_acts)
+        folder_name = str(self.path_output_acts)
 
         self.thread = ActsCreate(template_path, folder_name, csv_data)
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
-
     def start_acts_analysis(self):
         """Запуск обработки актов EXCEL."""
-        path_acts = str(self.path_acts)
-        path_output_csv_acts = str(self.path_output_csv_acts)
-        stage = self.cb_stage
+        path_acts = str(self.path_analysis_acts)
+        path_output_csv_acts = str(self.path_output_csv_data_acts)
+        stage = self.cb_stage_acts
 
         self.thread = ActsAnalysis(
             path_acts, path_output_csv_acts, stage)
