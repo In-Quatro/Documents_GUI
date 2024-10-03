@@ -84,6 +84,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_create_acts">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>136</x>
@@ -195,7 +198,10 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder">
+     <widget class="QPushButton" name="b_open_folder_acts">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -251,7 +257,7 @@
        <rect>
         <x>20</x>
         <y>260</y>
-        <width>151</width>
+        <width>231</width>
         <height>16</height>
        </rect>
       </property>
@@ -263,7 +269,7 @@
        </font>
       </property>
       <property name="text">
-       <string>ПОЛУЧИТЬ ДАННЫЕ</string>
+       <string>ПОЛУЧИТЬ ДАННЫЕ ИЗ АКТОВ</string>
       </property>
      </widget>
      <widget class="Line" name="line_2_acts">
@@ -370,6 +376,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_analysis_acts">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -389,6 +398,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_open_folder_csv_data_acts">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -502,6 +514,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_open_folder_csv_data_title_page">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>200</x>
@@ -520,6 +535,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_open_folder_title_page">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>250</x>
@@ -538,6 +556,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_analysis_title_page">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
@@ -634,6 +655,9 @@
       </property>
      </widget>
      <widget class="QPushButton" name="b_create_title_page">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>136</x>
@@ -828,7 +852,7 @@
        <rect>
         <x>20</x>
         <y>260</y>
-        <width>151</width>
+        <width>331</width>
         <height>16</height>
        </rect>
       </property>
@@ -840,7 +864,7 @@
        </font>
       </property>
       <property name="text">
-       <string>ПОЛУЧИТЬ ДАННЫЕ</string>
+       <string>ПОЛУЧИТЬ ДАННЫЕ ИЗ ТИТУЛЬНЫХ ЛИСТОВ</string>
       </property>
      </widget>
      <widget class="QPushButton" name="b_browse_template_title_page">
@@ -881,7 +905,7 @@
     </widget>
     <widget class="QWidget" name="tab_2">
      <attribute name="title">
-      <string>Заявки</string>
+      <string>Дополнительные утилиты</string>
      </attribute>
      <widget class="QLabel" name="l_create_act_4">
       <property name="geometry">
@@ -903,11 +927,11 @@
        <string>ВНЕСТИ ЗАЯВКИ В АКТЫ</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_template_5">
+     <widget class="QLabel" name="l_csv_data_incidents">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>50</y>
+        <y>100</y>
         <width>141</width>
         <height>16</height>
        </rect>
@@ -935,7 +959,7 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_template_5">
+     <widget class="QPushButton" name="b_browse_input_acts_incidents">
       <property name="geometry">
        <rect>
         <x>360</x>
@@ -948,7 +972,7 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_template_5">
+     <widget class="QLineEdit" name="le_path_input_acts_incidents">
       <property name="enabled">
        <bool>false</bool>
       </property>
@@ -961,11 +985,14 @@
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_read_acts_4">
+     <widget class="QPushButton" name="b_insert_incidents">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>150</y>
+        <y>200</y>
         <width>151</width>
         <height>23</height>
        </rect>
@@ -980,24 +1007,27 @@
        <string>Внести</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="le_path_output_csv_acts_3">
+     <widget class="QLineEdit" name="le_path_output_acts_incidents">
       <property name="enabled">
        <bool>false</bool>
       </property>
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>120</y>
+        <y>170</y>
         <width>331</width>
         <height>20</height>
        </rect>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_open_folder_data_acts_4">
+     <widget class="QPushButton" name="b_open_folder_acts_incidents">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>200</x>
-        <y>150</y>
+        <y>200</y>
         <width>151</width>
         <height>23</height>
        </rect>
@@ -1011,11 +1041,11 @@
        <string>Открыть папку</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_data_3">
+     <widget class="QPushButton" name="b_browse_output_acts_incidents">
       <property name="geometry">
        <rect>
         <x>360</x>
-        <y>120</y>
+        <y>170</y>
         <width>31</width>
         <height>23</height>
        </rect>
@@ -1024,11 +1054,11 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QLabel" name="l_folder_save_data_3">
+     <widget class="QLabel" name="l_folder_output_acts_incidents">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>100</y>
+        <y>150</y>
         <width>291</width>
         <height>16</height>
        </rect>
@@ -1043,16 +1073,186 @@
        <string>Папка для сохранения актов с заявками</string>
       </property>
      </widget>
-    </widget>
-    <widget class="QWidget" name="tab_4">
-     <attribute name="title">
-      <string>PDF</string>
-     </attribute>
+     <widget class="QLabel" name="l_folder_input_acts_incidents">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>50</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Century Gothic</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Папка с актами</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="le_path_csv_data_incidents">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>120</y>
+        <width>331</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="b_browse_csv_data_incidents">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>120</y>
+        <width>31</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="Line" name="line_1_pdf">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>280</y>
+        <width>371</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="b_open_folder_new_pdf">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>400</y>
+        <width>111</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Открыть папку</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="le_path_output_pdf">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>370</y>
+        <width>331</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="le_path_input_pdf">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>320</y>
+        <width>331</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="b_browse_output_pdf">
+      <property name="geometry">
+       <rect>
+        <x>360</x>
+        <y>370</y>
+        <width>31</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+     <widget class="QSpinBox" name="sb_stage_pdf">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>400</y>
+        <width>42</width>
+        <height>22</height>
+       </rect>
+      </property>
+      <property name="minimum">
+       <number>1</number>
+      </property>
+      <property name="maximum">
+       <number>10</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="b_rotate_pdf">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+      <property name="geometry">
+       <rect>
+        <x>120</x>
+        <y>400</y>
+        <width>111</width>
+        <height>23</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Century Gothic</family>
+        <pointsize>9</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Обработать</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="l_path_input_pdf">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>300</y>
+        <width>151</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Century Gothic</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Папка для обработки</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="l_create_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>10</y>
+        <y>260</y>
         <width>131</width>
         <height>16</height>
        </rect>
@@ -1068,82 +1268,11 @@
        <string>ОБРАБОТАТЬ PDF</string>
       </property>
      </widget>
-     <widget class="Line" name="line_1_pdf">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>30</y>
-        <width>371</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="le_path_input_pdf">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>70</y>
-        <width>331</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="b_browse_input_pdf">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>70</y>
-        <width>31</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>...</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="l_path_input_pdf">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>50</y>
-        <width>151</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Century Gothic</family>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Папка для обработки</string>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="le_path_output_pdf">
-      <property name="enabled">
-       <bool>false</bool>
-      </property>
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>120</y>
-        <width>331</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="l_path_output_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>100</y>
+        <y>350</y>
         <width>181</width>
         <height>16</height>
        </rect>
@@ -1158,11 +1287,11 @@
        <string>Папка для готовых файлов</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_browse_output_pdf">
+     <widget class="QPushButton" name="b_browse_input_pdf">
       <property name="geometry">
        <rect>
         <x>360</x>
-        <y>120</y>
+        <y>320</y>
         <width>31</width>
         <height>23</height>
        </rect>
@@ -1171,48 +1300,11 @@
        <string>...</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="b_rotate_pdf">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>160</y>
-        <width>111</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Century Gothic</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Обработать</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="b_open_folder_new_pdf">
-      <property name="geometry">
-       <rect>
-        <x>240</x>
-        <y>160</y>
-        <width>111</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Открыть папку</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="l_stage_pdf">
       <property name="geometry">
        <rect>
         <x>20</x>
-        <y>162</y>
+        <y>402</y>
         <width>41</width>
         <height>16</height>
        </rect>
@@ -1225,39 +1317,6 @@
       </property>
       <property name="text">
        <string>Этап</string>
-      </property>
-     </widget>
-     <widget class="QSpinBox" name="sb_stage_pdf">
-      <property name="geometry">
-       <rect>
-        <x>60</x>
-        <y>160</y>
-        <width>42</width>
-        <height>22</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QTextEdit" name="te_pdf">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>200</y>
-        <width>371</width>
-        <height>261</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="b_clear_te_pdf">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>160</y>
-        <width>31</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>x</string>
       </property>
      </widget>
     </widget>

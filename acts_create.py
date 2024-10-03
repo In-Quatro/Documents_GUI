@@ -8,6 +8,8 @@ from constants import (SIGNATURE_EXECUTIVE, SIGNATURES_PARTIES, EXECUTIVE,
 
 from styles import (font, font_bold, border,
                     alignment_1, alignment_2, alignment_3)
+from utils import get_new_file_name
+# import utils
 import openpyxl
 from PyQt5.QtCore import QThread, pyqtSignal
 
@@ -16,16 +18,26 @@ class ActsCreate(QThread):
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 
-    def __init__(self, template_path, folder_name, csv_data):
+    def __init__(
+            self,
+            path_template_acts,
+            path_csv_data_acts,
+            path_output_acts
+    ):
         super().__init__()
-        self.template_path = template_path
-        self.folder_name = folder_name
-        self.csv_data = csv_data
+        self.path_template_acts = path_template_acts
+        self.path_csv_data_acts = path_csv_data_acts
+        self.path_output_acts = path_output_acts
+        self.get_new_file_name = get_new_file_name
 
     def run(self):
         try:
             self.status_update.emit('Идет создание актов, ожидайте...')
-            self.file_processing(self.template_path, self.folder_name, self.csv_data)
+            self.file_processing(
+                self.path_template_acts,
+                self.path_output_acts,
+                self.path_csv_data_acts
+            )
         except Exception as e:
             print(e)
 
@@ -212,21 +224,11 @@ class ActsCreate(QThread):
             self.fill_signature(sheet, idx_row, current_signature)
 
             if current_file is not None:
-                new_f_name = self.get_new_file_name(f'{current_file}.xlsx', folder)
+                new_f_name = self.get_new_file_name(
+                    f'{current_file}.xlsx', folder)
                 with Path(folder, new_f_name) as output_file:
                     wb.save(output_file)
                 quantity += 1
         self.progress_update.emit(100)
         self.status_update.emit(f'Готово. Создано файлов: {quantity}')
 
-    @staticmethod
-    def get_new_file_name(file_name, folder):
-        """Переименовывает новый файл если уже есть такой файл в папке."""
-        base, ext = os.path.splitext(file_name)
-        index = 1
-        new_file_name = file_name
-
-        while os.path.exists(os.path.join(folder, new_file_name)):
-            new_file_name = f'{base} ({index}){ext}'
-            index += 1
-        return new_file_name

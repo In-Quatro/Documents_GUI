@@ -10,12 +10,12 @@ class PdfRotation(QThread):
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 
-    def __init__(self, path_input_pdf, path_output_pdf, stage, te_pdf):
+    def __init__(self, path_input_pdf, path_output_pdf, stage):
         super().__init__()
         self.path_input_pdf = path_input_pdf
         self.path_output_pdf = path_output_pdf
         self.stage = stage
-        self.te_pdf = te_pdf
+        # self.te_pdf = te_pdf
 
     def run(self):
         try:
@@ -71,7 +71,7 @@ class PdfRotation(QThread):
         date = datetime.now().strftime('%d.%m.%Y %H:%M:%S')
         num_pages = pdf_reader.getNumPages()
         row = [file_name, file_name[4::], num_pages, date]
-        self.te_pdf.append(f'{file_name} - {num_pages}')
+        # self.te_pdf.append(f'{file_name} - {num_pages}')
 
         # Проверка на существование файла и запись данных
         file_exists = os.path.isfile(csv_file_path)

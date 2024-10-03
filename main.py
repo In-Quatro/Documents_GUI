@@ -1,3 +1,5 @@
+import traceback
+
 from PyQt5 import uic
 from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
 
@@ -9,200 +11,147 @@ from acts_analysis import *
 from pdf_rotation import *
 from title_page_analysis import *
 from title_page import *
+from acts_incidents import *
 
 
 class MainWindow(QMainWindow):
     """"Главное окно."""
-
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi(self.resource_path('ui/open.ui'), self)
-        # Создание актов
-        self.path_template_acts = None
-        self.path_csv_data_acts = None
-        self.path_output_acts = None
-        self.b_create_acts.setEnabled(False)
 
+        # Кнопки раздела "СОЗДАТЬ АКТЫ"
         self.b_browse_template_acts.clicked.connect(partial(
-            self.get_file, 'template_acts', 'Excel Files (*.xlsx)'))
+            self.get_file, self.le_path_template_acts, 'Excel Files (*.xlsx)'))
         self.b_browse_csv_data_acts.clicked.connect(partial(
-            self.get_file, 'csv_data_acts', 'CSV Files (*.csv)'))
+            self.get_file, self.le_path_csv_data_acts, 'CSV Files (*.csv)'))
         self.b_browse_output_acts.clicked.connect(partial(
-            self.get_directory, 'output_acts'))
-
-        # Кнопки для Создания актов
+            self.get_directory, self.le_path_output_acts))
         self.b_create_acts.clicked.connect(self.start_acts_create)
-        self.b_open_folder.clicked.connect(self.open_folder)
+        self.b_open_folder_acts.clicked.connect(partial(
+            self.open_folder, self.le_path_output_acts))
 
-        # Обработка актов
-        self.path_analysis_acts = None
-        self.path_output_csv_data_acts = None
-        self.b_analysis_acts.setEnabled(False)
-
+        # Кнопки раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ АКТОВ"
         self.b_browse_input_acts.clicked.connect(partial(
-            self.get_directory, 'save_csv_file_acts', ))
+            self.get_directory, self.le_path_analysis_acts))
         self.b_browse_output_csv_data_acts.clicked.connect(partial(
-            self.save_file, 'save_csv_file_folder_acts'))
-
-        # Кнопки для сохранения данных из актов _xlsx_ файлов в _csv_ файл
-        self.b_open_folder_csv_data_acts.clicked.connect(self.open_folder_2)
+            self.save_file, self.le_path_output_csv_data_acts))
         self.b_analysis_acts.clicked.connect(self.start_acts_analysis)
+        self.b_open_folder_csv_data_acts.clicked.connect(partial(
+            self.open_folder, self.le_path_output_csv_data_acts, True))
 
-        # Обработка PDF
-        self.path_input_pdf: str = None
-        self.path_output_pdf: str = None
-        self.b_rotate_pdf.setEnabled(False)
-
-        self.b_browse_input_pdf.clicked.connect(partial(
-            self.get_directory, 'input_pdf'))
-        self.b_browse_output_pdf.clicked.connect(partial(
-            self.get_directory, 'output_pdf'))
-
-        # Кнопки для обработки _pdf_ файлов
-        self.b_rotate_pdf.clicked.connect(self.start_pdf_rotation)
-        self.b_open_folder_new_pdf.clicked.connect(self.open_folder_3)
-
-        self.b_clear_te_pdf.clicked.connect(self.clear_te_pdf)
-
-        # Создание титульных листов
-        self.path_template_title_page = None
-        self.path_csv_data_title_page = None
-        self.path_output_title_page = None
-        self.b_create_title_page.setEnabled(False)
-
+        # Кнопки раздела "СОЗДАТЬ ТИТУЛЬНЫЕ ЛИСТЫ"
         self.b_browse_template_title_page.clicked.connect(partial(
-            self.get_file, 'template_title_page', 'Word Files (*.docx)'))
+            self.get_file, self.le_path_template_title_page, 'Word Files (*.docx)'))
         self.b_browse_csv_data_title_page.clicked.connect(partial(
-            self.get_file, 'csv_data_title_page', 'CSV Files (*.csv)'))
+            self.get_file, self.le_path_csv_data_title_page, 'CSV Files (*.csv)'))
         self.b_browse_output_title_page.clicked.connect(partial(
-            self.get_directory, 'output_title_page'))
-
+            self.get_directory, self.le_path_output_title_page))
         self.b_create_title_page.clicked.connect(self.start_title_page_create)
-        self.b_open_folder_title_page.clicked.connect(self.open_folder_4)
-        # self.b_create_title_page.clicked.connect(self.test_path)
+        self.b_open_folder_title_page.clicked.connect(partial(
+            self.open_folder, self.le_path_output_title_page))
 
-        # Обработка титульных листов
-        self.path_analysis_title_page = None
-        self.path_output_csv_data_title_page = None
-        self.b_analysis_title_page.setEnabled(False)
-
+        # Кнопки раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ ТИТУЛЬНЫХ ЛИСТОВ"
         self.b_browse_input_title_page.clicked.connect(partial(
-            self.get_directory, 'save_csv_file_title_page', ))
+            self.get_directory, self.le_path_analysis_title_page))
         self.b_browse_output_csv_data_title_page.clicked.connect(partial(
-            self.save_file, 'save_csv_file_folder_title_page'))
-
-        # Кнопки для сохранения данных из актов _docx_ файлов в _csv_ файл
+            self.save_file, self.le_path_output_csv_data_title_page))
         self.b_analysis_title_page.clicked.connect(
             self.start_title_page_analysis)
-        self.b_open_folder_csv_data_title_page.clicked.connect(
-            self.open_folder_5)
+        self.b_open_folder_csv_data_title_page.clicked.connect(partial(
+            self.open_folder, self.le_path_output_csv_data_title_page, True))
 
-        self.actions = {
-            #  Создание актов _xlsx_ из _csv_ файла с данными
-            'template_acts':
-                ['path_template_acts',
-                 self.le_path_template_acts],
-            'csv_data_acts':
-                ['path_csv_data_acts',
-                 self.le_path_csv_data_acts],
-            'output_acts':
-                ['path_output_acts',
-                 self.le_path_output_acts],
+        # Кнопки раздела "ВНЕСТИ ЗАЯВКИ В АКТЫ"
+        self.b_browse_input_acts_incidents.clicked.connect(partial(
+            self.get_directory, self.le_path_input_acts_incidents))
+        self.b_browse_csv_data_incidents.clicked.connect(partial(
+            self.get_file,
+            self.le_path_csv_data_incidents,
+            'CSV Files (*.csv)'))
+        self.b_browse_output_acts_incidents.clicked.connect(partial(
+            self.get_directory, self.le_path_output_acts_incidents))
+        self.b_insert_incidents.clicked.connect(
+            self.start_acts_incidents)
+        self.b_open_folder_acts_incidents.clicked.connect(partial(
+            self.open_folder, self.le_path_output_acts_incidents))
 
-            # Сохранения данных из актов _xlsx_ файлов в _csv_ файл
-            'save_csv_file_acts':
-                ['path_analysis_acts',
-                 self.le_path_analysis_acts],
-            'save_csv_file_folder_acts':
-                ['path_output_csv_data_acts',
-                 self.le_path_output_csv_data_acts],
-
-            # Обработка файлов _pdf_
-            'input_pdf':
-                ['path_input_pdf',
-                 self.le_path_input_pdf],
-            'output_pdf':
-                ['path_output_pdf',
-                 self.le_path_output_pdf],
-
-            #  Создание актов _docx_ из _csv_ файла с данными
-            'template_title_page':
-                ['path_template_title_page',
-                 self.le_path_template_title_page],
-            'csv_data_title_page':
-                ['path_csv_data_title_page',
-                 self.le_path_csv_data_title_page],
-            'output_title_page':
-                ['path_output_title_page',
-                 self.le_path_output_title_page],
-
-            # Сохранения данных из актов _xlsx_ файлов в _csv_ файл
-            'save_csv_file_title_page':
-                ['path_analysis_title_page',
-                 self.le_path_analysis_title_page],
-            'save_csv_file_folder_title_page':
-                ['path_output_csv_data_title_page',
-                 self.le_path_output_csv_data_title_page],
-        }
-
-    # def check_button_create_acts_state(self):
-    #     self.b_create_acts.setEnabled(
-    #         all([
-    #             self.path_template_acts,
-    #             self.path_csv_data_acts,
-    #             self.path_output_acts
-    #         ])
-    #     )
-    #
-    # def check_button_read_acts_state(self):
-    #     self.b_analysis_acts.setEnabled(
-    #         all([
-    #             self.path_analysis_acts,
-    #             self.path_output_csv_data_acts,
-    #         ])
-    #     )
-    #
-    # def check_button_rotate_pdf_state(self):
-    #     self.b_rotate_pdf.setEnabled(
-    #         all([
-    #             self.path_input_pdf,
-    #             self.path_output_pdf,
-    #         ])
-    #     )
+        # Кнопки раздела "ОБРАБОТАТЬ PDF"
+        self.b_browse_input_pdf.clicked.connect(
+            partial(self.get_directory, self.le_path_input_pdf))
+        self.b_browse_output_pdf.clicked.connect(
+            partial(self.get_directory, self.le_path_output_pdf))
+        self.b_rotate_pdf.clicked.connect(self.start_pdf_rotation)
+        self.b_open_folder_new_pdf.clicked.connect(partial(
+            self.open_folder, self.le_path_output_pdf))
 
     def check_button_state(self, button, conditions):
+        """Проверка кнопки для включения."""
         button.setEnabled(all(conditions))
 
     def check_buttons(self):
+        """Подготовка данных кнопок для проверки перед включением."""
+        # Включение кнопок раздела "ОСОЗДАТЬ АКТЫ"
         self.check_button_state(self.b_create_acts, [
-            self.path_template_acts,
-            self.path_csv_data_acts,
-            self.path_output_acts
+            self.le_path_template_acts.text(),
+            self.le_path_csv_data_acts.text(),
+            self.le_path_output_acts.text(),
         ])
 
+        self.check_button_state(self.b_open_folder_acts, [
+            self.le_path_output_acts.text(),
+        ])
+
+        # Включение кнопок раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ АКТОВ"
         self.check_button_state(self.b_analysis_acts, [
-            self.path_analysis_acts,
-            self.path_output_csv_data_acts,
+            self.le_path_analysis_acts.text(),
+            self.le_path_output_csv_data_acts.text(),
         ])
 
-        self.check_button_state(self.b_rotate_pdf, [
-            self.path_input_pdf,
-            self.path_output_pdf,
+        self.check_button_state(self.b_open_folder_csv_data_acts, [
+            self.le_path_output_csv_data_acts.text(),
         ])
 
+        # Включение кнопок раздела "СОЗДАТЬ ТИТУЛЬНЫЕ ЛИСТЫ"
         self.check_button_state(self.b_create_title_page, [
-            self.path_template_title_page,
-            self.path_csv_data_title_page,
-            self.path_output_title_page
+            self.le_path_template_title_page.text(),
+            self.le_path_csv_data_title_page.text(),
+            self.le_path_output_title_page.text(),
         ])
 
+        self.check_button_state(self.b_open_folder_title_page, [
+            self.le_path_output_title_page.text(),
+        ])
+
+        # Включение кнопок раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ ТИТУЛЬНЫХ ЛИСТОВ"
         self.check_button_state(self.b_analysis_title_page, [
-            self.path_analysis_title_page,
-            self.path_output_csv_data_title_page,
+            self.le_path_analysis_title_page.text(),
+            self.le_path_output_csv_data_title_page.text(),
         ])
 
-    def clear_te_pdf(self):
-        self.te_pdf.clear()
+        self.check_button_state(self.b_open_folder_csv_data_title_page, [
+            self.le_path_output_csv_data_title_page.text(),
+        ])
+
+        # Включение кнопок раздела "ВНЕСТИ ЗАЯВКИ В АКТЫ"
+        self.check_button_state(self.b_insert_incidents, [
+            self.le_path_input_acts_incidents.text(),
+            self.le_path_csv_data_incidents.text(),
+            self.le_path_output_acts_incidents.text(),
+        ])
+
+        self.check_button_state(self.b_open_folder_acts_incidents, [
+            self.le_path_output_acts_incidents.text(),
+        ])
+
+        # Включение кнопок раздела "ОБРАБОТАТЬ PDF"
+        self.check_button_state(self.b_rotate_pdf, [
+            self.le_path_input_pdf.text(),
+            self.le_path_output_pdf.text(),
+        ])
+
+        self.check_button_state(self.b_open_folder_new_pdf, [
+            self.le_path_output_pdf.text(),
+        ])
 
     def update_status(self, msg):
         """Изменение сообщения статусбара."""
@@ -221,94 +170,78 @@ class MainWindow(QMainWindow):
 
     def get_directory(self, action):
         """Выбор папки."""
-        dirlist = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
-        if action in self.actions:
-            setattr(self, self.actions[action][0], dirlist)
-            self.actions[action][1].setText(dirlist)
-            self.check_buttons()
+        path = QFileDialog.getExistingDirectory(self, "Выбрать папку", ".")
+        action.setText(path)
+        self.check_buttons()
 
     def get_file(self, action, format_file):
         """Выбор файла."""
-        filename, filetype = QFileDialog.getOpenFileName(
-            self,
-            f"Выбрать файл",
-            ".",
-            f"{format_file}"
-        )
-        if action in self.actions:
-            setattr(self, self.actions[action][0], filename)
-            self.actions[action][1].setText(filename)
-            self.check_buttons()
+        try:
+            filename, filetype = QFileDialog.getOpenFileName(
+                self,
+                f"Выбрать файл",
+                ".",
+                f"{format_file}"
+            )
+            if action:
+                action.setText(filename)
+                self.check_buttons()
+        except Exception as e:
+            print(e)
 
     def save_file(self, action):
-        """Сохранить файл."""
+        """Выбрать путь для сохранения файла."""
         filename, ok = QFileDialog.getSaveFileName(self,
-                                                   "Сохранить файл",
+                                                   "Сохранить как",
                                                    ".",
                                                    'CSV Files (*.csv)')
-        if action in self.actions:
-            setattr(self, self.actions[action][0], filename)
-            self.actions[action][1].setText(filename)
-            self.check_buttons()
+
+        action.setText(filename)
+        self.check_buttons()
 
     def update_progress(self, value):
         """Прогресбар."""
         self.progressBar.setValue(value)
 
-    def open_folder(self):
-        """Открытие папки созданных актов."""
-        if self.path_output_acts:
-            normalized_path = Path(self.path_output_acts)
-            subprocess.Popen(['explorer', normalized_path])
-        else:
-            self.update_status('Необходимо выбрать папку')
-
-    def open_folder_2(self):
-        """Открытие папки."""
-        if self.path_output_csv_data_acts:
-            path_csv = Path(self.path_output_csv_data_acts).parent
-            subprocess.Popen(['explorer', path_csv])
-        else:
-            self.update_status('Необходимо выбрать папку')
-
-    def open_folder_3(self):
-        """Открытие папки."""
-        if self.path_output_pdf:
-            path_pdf = Path(self.path_output_pdf)
-            subprocess.Popen(['explorer', path_pdf])
-        else:
-            self.update_status('Необходимо выбрать папку')
-
-    def open_folder_4(self):
-        """Открытие папки."""
-        if self.path_output_title_page:
-            subprocess.Popen(['explorer', Path(self.path_output_title_page)])
-        else:
-            self.update_status('Необходимо выбрать папку')
-
-    def open_folder_5(self):
-        """Открытие папки."""
-        if self.path_output_csv_data_title_page:
-            path_csv = Path(self.path_output_csv_data_title_page).parent
-            subprocess.Popen(['explorer', path_csv])
+    def open_folder(self, folder, parent=False):
+        """Открытие конечной папки."""
+        if folder:
+            folder = Path(folder.text())
+            if parent:
+                folder = folder.parent
+            subprocess.Popen(['explorer', folder])
         else:
             self.update_status('Необходимо выбрать папку')
 
     def start_acts_create(self):
-        """Запуск создания актов EXCEL."""
-        template_path = str(self.path_template_acts)
-        csv_data = str(self.path_csv_data_acts)
-        folder_name = str(self.path_output_acts)
+        """Запуск создания Актов _xlsx_."""
+        path_template_acts = Path(
+            self.le_path_template_acts.text()
+        )
+        path_csv_data_acts = Path(
+            self.le_path_csv_data_acts.text()
+        )
+        path_output_acts = Path(
+            self.le_path_output_acts.text()
+        )
 
-        self.thread = ActsCreate(template_path, folder_name, csv_data)
+        self.thread = ActsCreate(
+            path_template_acts,
+            path_csv_data_acts,
+            path_output_acts
+        )
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
     def start_acts_analysis(self):
-        """Запуск обработки актов EXCEL."""
-        path_acts = str(self.path_analysis_acts)
-        path_output_csv_acts = str(self.path_output_csv_data_acts)
+        """Запуск обработки Актов _xlsx_ в _csv_."""
+        path_acts = Path(
+            self.le_path_analysis_acts.text()
+        )
+        path_output_csv_acts = Path(
+            self.le_path_output_csv_data_acts.text()
+        )
         stage = self.cb_stage_acts
 
         self.thread = ActsAnalysis(
@@ -320,58 +253,78 @@ class MainWindow(QMainWindow):
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
-    def start_pdf_rotation(self):
-        """Запуск обработки PDF документов."""
-        path_input_pdf = str(self.path_input_pdf)
-        path_output_pdf = str(self.path_output_pdf)
-        stage = self.sb_stage_pdf
-        te_pdf = self.te_pdf
+    def start_title_page_create(self):
+        """Запуск создания Титульных листов _docx_."""
+        path_template_title_page = Path(
+            self.le_path_template_title_page.text()
+        )
+        path_csv_data_title_page = Path(
+            self.le_path_csv_data_title_page.text()
+        )
+        path_output_title_page = Path(
+            self.le_path_output_title_page.text()
+        )
 
-        self.thread = PdfRotation(
-            path_input_pdf,
-            path_output_pdf,
-            stage,
-            te_pdf
+        self.thread = TitlePageCreate(
+            path_template_title_page,
+            path_csv_data_title_page,
+            path_output_title_page
         )
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
-    def start_title_page_create(self):
-        try:
-            path_template_title_page = str(self.path_template_title_page)
-            path_csv_data_title_page = str(self.path_csv_data_title_page)
-            path_output_title_page = str(self.path_output_title_page)
-
-            self.thread = TitlePageCreate(
-                path_template_title_page,
-                path_csv_data_title_page,
-                path_output_title_page
-            )
-            self.thread.status_update.connect(self.update_status)
-            self.thread.progress_update.connect(self.update_progress)
-            self.thread.start()
-        except Exception as e:
-            print(e)
-
     def start_title_page_analysis(self):
-        try:
-            path_analysis_title_page = str(self.path_analysis_title_page)
-            path_output_csv_data_title_page = str(
-                self.path_output_csv_data_title_page)
+        """Запуск обработки Титульных листов _docx_ в _csv_."""
+        path_analysis_title_page = Path(
+            self.le_path_analysis_title_page.text()
+        )
+        path_output_csv_data_title_page = Path(
+            self.le_path_output_csv_data_title_page.text()
+        )
 
-            self.thread = TitlePageAnalysis(path_analysis_title_page,
-                                            path_output_csv_data_title_page)
-            self.thread.status_update.connect(self.update_status)
-            self.thread.progress_update.connect(self.update_progress)
-            self.thread.start()
+        self.thread = TitlePageAnalysis(path_analysis_title_page,
+                                        path_output_csv_data_title_page)
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
 
-        except Exception as e:
-            print(e)
+    def start_acts_incidents(self):
+        """Запуск внесение заявок в Акты _xlsx_ из _csv_."""
+        path_input_acts_incidents = Path(
+            self.le_path_input_acts_incidents.text()
+        )
+        path_csv_data_incidents = Path(
+            self.le_path_csv_data_incidents.text()
+        )
+        path_output_acts_incidents = Path(
+            self.le_path_output_acts_incidents.text()
+        )
 
-    def test_path(self):
-        print(f'{self.path_analysis_title_page=}')
-        print(f'{self.path_output_csv_data_title_page=}')
+        self.thread = ActIncident(
+            path_input_acts_incidents,
+            path_csv_data_incidents,
+            path_output_acts_incidents
+        )
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
+
+
+    def start_pdf_rotation(self):
+        """Запуск обработки PDF документов."""
+        path_input_pdf = Path(self.le_path_input_pdf.text())
+        path_output_pdf = Path(self.le_path_output_pdf.text())
+        stage = self.sb_stage_pdf
+
+        self.thread = PdfRotation(
+            path_input_pdf,
+            path_output_pdf,
+            stage,
+        )
+        self.thread.status_update.connect(self.update_status)
+        self.thread.progress_update.connect(self.update_progress)
+        self.thread.start()
 
 
 if __name__ == '__main__':
