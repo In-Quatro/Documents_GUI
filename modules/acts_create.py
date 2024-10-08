@@ -1,20 +1,21 @@
 import csv
-import os
 from pathlib import Path
 
-from constants import (SIGNATURE_EXECUTIVE, SIGNATURES_PARTIES, EXECUTIVE,
-                       EURECA, SIGNATURE_MEDICAL_ORGANIZATION,
-                       MEDICAL_ORGANIZATION, STAMP_PLACE)
-
-from styles import (font, font_bold, border,
-                    alignment_1, alignment_2, alignment_3)
-from utils import get_new_file_name
-# import utils
-import openpyxl
 from PyQt5.QtCore import QThread, pyqtSignal
+import openpyxl
+
+from modules.constants import (
+    SIGNATURES_PARTIES, EXECUTIVE,
+    SIGNATURE_MEDICAL_ORGANIZATION,
+    MEDICAL_ORGANIZATION, STAMP_PLACE)
+from modules.styles import (
+    font, font_bold, border,
+    alignment_1, alignment_2, alignment_3)
+from modules.utils import get_new_file_name
 
 
 class ActsCreate(QThread):
+    """Создание Актов _xlsx_ из _csv_ файла с данными."""
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 
@@ -22,16 +23,19 @@ class ActsCreate(QThread):
             self,
             path_template_acts,
             path_csv_data_acts,
-            path_output_acts
+            path_output_acts,
+            dialog
     ):
         super().__init__()
         self.path_template_acts = path_template_acts
         self.path_csv_data_acts = path_csv_data_acts
         self.path_output_acts = path_output_acts
         self.get_new_file_name = get_new_file_name
+        self.dialog = dialog
 
     def run(self):
         try:
+            self.post, self.fio = self.dialog
             self.status_update.emit('Идет создание актов, ожидайте...')
             self.file_processing(
                 self.path_template_acts,
@@ -44,7 +48,6 @@ class ActsCreate(QThread):
     @staticmethod
     def check_months(*args):
         """Обработка количества месяцев."""
-
         result = ['-'] * 6
         idx = 0
         for month in args:
@@ -57,7 +60,7 @@ class ActsCreate(QThread):
         return result
 
     @staticmethod
-    def fill_month_data(sheet, idx_row, i, month_start, month_end):
+    def fill_month_data(self, sheet, idx_row, i, month_start, month_end):
         """Заполнение строк датами, '-' и 1."""
         if month_start != '-':
             sheet[f'D{idx_row + i}'] = month_start
@@ -68,8 +71,7 @@ class ActsCreate(QThread):
                 sheet.cell(row=idx_row + i, column=column, value='−')
             sheet[f'M{idx_row + i}'] = 1
 
-    @staticmethod
-    def fill_signature(sheet, idx_row, signature):
+    def fill_signature(self, sheet, idx_row, signature):
         """Создание подписи в документе."""
         sheet[f'A{idx_row + 1}'] = SIGNATURES_PARTIES
         sheet[f'A{idx_row + 1}'].font = font
@@ -82,7 +84,7 @@ class ActsCreate(QThread):
         sheet[f'J{idx_row + 3}'] = MEDICAL_ORGANIZATION
         sheet[f'J{idx_row + 3}'].font = font_bold
 
-        sheet[f'B{idx_row + 5}'] = EURECA
+        sheet[f'B{idx_row + 5}'] = self.post
         sheet[f'B{idx_row + 5}'].font = font_bold
         sheet[f'B{idx_row + 5}'].alignment = alignment_2
         sheet.merge_cells(f'B{idx_row + 5}:D{idx_row + 5}')
@@ -93,7 +95,7 @@ class ActsCreate(QThread):
         sheet[f'J{idx_row + 5}'].alignment = alignment_3
         sheet.merge_cells(f'J{idx_row + 5}:L{idx_row + 5}')
 
-        sheet[f'B{idx_row + 8}'] = SIGNATURE_EXECUTIVE
+        sheet[f'B{idx_row + 8}'] = f'________________/{self.fio}/'
         sheet[f'B{idx_row + 8}'].font = font
 
         sheet[f'J{idx_row + 8}'] = SIGNATURE_MEDICAL_ORGANIZATION
@@ -231,4 +233,3 @@ class ActsCreate(QThread):
                 quantity += 1
         self.progress_update.emit(100)
         self.status_update.emit(f'Готово. Создано файлов: {quantity}')
-

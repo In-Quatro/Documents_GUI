@@ -1,14 +1,14 @@
-import subprocess
-
-import openpyxl
-import os
-from pathlib import Path
-import re
 import csv
+import os
+import re
+from pathlib import Path
+
 from PyQt5.QtCore import QThread, pyqtSignal
+import openpyxl
 
 
 class ActsAnalysis(QThread):
+    """Анализ Актов _xlsx_ с сохранением данных в _csv_ файл."""
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 
@@ -19,7 +19,6 @@ class ActsAnalysis(QThread):
         self.stage = stage
 
     def run(self):
-
         """Главная функция."""
         try:
             files = os.listdir(self.path_acts)
@@ -46,11 +45,7 @@ class ActsAnalysis(QThread):
             print(e)
 
     def check_month(self, m1s, m1e, m2s='-', m2e='-', m3s='-', m3e='-'):
-        """
-        Распределение дат по своим месяцам.
-
-        Необходимо менять ключи под нужный этап в файле constants.
-        """
+        """Распределение дат по своим месяцам."""
 
         stage = {
             '1 этап (01.08.2023 - 31.10.2023)': ['08', '09', '10'],

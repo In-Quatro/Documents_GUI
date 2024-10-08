@@ -1,24 +1,26 @@
-import traceback
-
-from PyQt5 import uic
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog
+from PyQt5 import uic, QtGui
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QDialog
 
 import sys
 from functools import partial
 
-from acts_create import *
-from acts_analysis import *
-from pdf_rotation import *
-from title_page_analysis import *
-from title_page import *
-from acts_incidents import *
+from modules.acts_analysis import *
+from modules.acts_create import *
+from modules.acts_incidents import *
+from modules.pdf_rotation import *
+from modules.title_page import *
+from modules.title_page_analysis import *
 
 
 class MainWindow(QMainWindow):
     """"Главное окно."""
     def __init__(self):
         super(MainWindow, self).__init__()
-        uic.loadUi(self.resource_path('ui/open.ui'), self)
+        uic.loadUi(self.resource_path('ui/main.ui'), self)
+        self.dialog = Dialog_acts()
+        self.setWindowIcon(
+            QtGui.QIcon(self.resource_path("ui/icons/logo.ico")))
 
         # Кнопки раздела "СОЗДАТЬ АКТЫ"
         self.b_browse_template_acts.clicked.connect(partial(
@@ -31,6 +33,8 @@ class MainWindow(QMainWindow):
         self.b_open_folder_acts.clicked.connect(partial(
             self.open_folder, self.le_path_output_acts))
 
+        self.b_other_menu_acts.clicked.connect(self.open_dialog)
+
         # Кнопки раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ АКТОВ"
         self.b_browse_input_acts.clicked.connect(partial(
             self.get_directory, self.le_path_analysis_acts))
@@ -42,14 +46,20 @@ class MainWindow(QMainWindow):
 
         # Кнопки раздела "СОЗДАТЬ ТИТУЛЬНЫЕ ЛИСТЫ"
         self.b_browse_template_title_page.clicked.connect(partial(
-            self.get_file, self.le_path_template_title_page, 'Word Files (*.docx)'))
+            self.get_file,
+            self.le_path_template_title_page,
+            'Word Files (*.docx)'))
         self.b_browse_csv_data_title_page.clicked.connect(partial(
-            self.get_file, self.le_path_csv_data_title_page, 'CSV Files (*.csv)'))
+            self.get_file,
+            self.le_path_csv_data_title_page,
+            'CSV Files (*.csv)'))
         self.b_browse_output_title_page.clicked.connect(partial(
-            self.get_directory, self.le_path_output_title_page))
+            self.get_directory,
+            self.le_path_output_title_page))
         self.b_create_title_page.clicked.connect(self.start_title_page_create)
         self.b_open_folder_title_page.clicked.connect(partial(
-            self.open_folder, self.le_path_output_title_page))
+            self.open_folder,
+            self.le_path_output_title_page))
 
         # Кнопки раздела "ПОЛУЧИТЬ ДАННЫЕ ИЗ ТИТУЛЬНЫХ ЛИСТОВ"
         self.b_browse_input_title_page.clicked.connect(partial(
@@ -95,6 +105,8 @@ class MainWindow(QMainWindow):
             self.le_path_template_acts.text(),
             self.le_path_csv_data_acts.text(),
             self.le_path_output_acts.text(),
+            self.dialog.te_post.toPlainText(),
+            self.dialog.le_fio.text(),
         ])
 
         self.check_button_state(self.b_open_folder_acts, [
@@ -195,7 +207,6 @@ class MainWindow(QMainWindow):
                                                    "Сохранить как",
                                                    ".",
                                                    'CSV Files (*.csv)')
-
         action.setText(filename)
         self.check_buttons()
 
@@ -224,11 +235,12 @@ class MainWindow(QMainWindow):
         path_output_acts = Path(
             self.le_path_output_acts.text()
         )
-
+        dialog = self.dialog.get_data()
         self.thread = ActsCreate(
             path_template_acts,
             path_csv_data_acts,
-            path_output_acts
+            path_output_acts,
+            dialog
         )
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
@@ -310,7 +322,6 @@ class MainWindow(QMainWindow):
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
 
-
     def start_pdf_rotation(self):
         """Запуск обработки PDF документов."""
         path_input_pdf = Path(self.le_path_input_pdf.text())
@@ -325,6 +336,35 @@ class MainWindow(QMainWindow):
         self.thread.status_update.connect(self.update_status)
         self.thread.progress_update.connect(self.update_progress)
         self.thread.start()
+
+    def open_dialog(self):
+        self.dialog.exec_()
+        self.check_buttons()
+
+
+class Dialog_acts(QDialog):
+    """Диалоговое окно."""
+    def __init__(self):
+        super(Dialog_acts, self).__init__()
+        uic.loadUi(self.resource_path(r'ui\dialog_acts.ui'), self)
+        self.setWindowIcon(
+            QtGui.QIcon(self.resource_path("ui/icons/logo.ico")))
+
+    def get_data(self):
+        self.post = self.te_post.toPlainText().replace(
+            '"', '«', 1).replace('"', '»', 2)
+        self.fio = self.le_fio.text()
+        return self.post, self.fio
+
+    @staticmethod
+    def resource_path(relative_path):
+        """Получает абсолютный путь к ресурсу,
+        работает как в режиме разработки, так и в скомпилированном виде."""
+        try:
+            base_path = sys._MEIPASS
+        except Exception:
+            base_path = os.path.abspath(".")
+        return os.path.join(base_path, relative_path)
 
 
 if __name__ == '__main__':

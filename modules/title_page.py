@@ -1,14 +1,13 @@
-import os
-import re
 import csv
-import logging
-from PyQt5.QtCore import QThread, pyqtSignal
-
+import re
 from pathlib import Path
+
 from docx import Document
+from PyQt5.QtCore import QThread, pyqtSignal
 
 
 class TitlePageCreate(QThread):
+    """Создание Титульных листов _docx_ из _csv_ файла с данными."""
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 

@@ -10,6 +10,18 @@
     <height>550</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>409</width>
+    <height>550</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>409</width>
+    <height>550</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>Работа с документами</string>
   </property>
@@ -540,9 +552,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>250</x>
+        <x>200</x>
         <y>200</y>
-        <width>100</width>
+        <width>151</width>
         <height>23</height>
        </rect>
       </property>
@@ -660,9 +672,9 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>136</x>
+        <x>20</x>
         <y>200</y>
-        <width>100</width>
+        <width>151</width>
         <height>23</height>
        </rect>
       </property>
@@ -878,28 +890,6 @@
       </property>
       <property name="text">
        <string>...</string>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="b_other_menu_title_page">
-      <property name="geometry">
-       <rect>
-        <x>20</x>
-        <y>200</y>
-        <width>100</width>
-        <height>23</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Century Gothic</family>
-        <pointsize>9</pointsize>
-       </font>
-      </property>
-      <property name="cursor">
-       <cursorShape>ArrowCursor</cursorShape>
-      </property>
-      <property name="text">
-       <string>Доп. поля</string>
       </property>
      </widget>
     </widget>

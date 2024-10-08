@@ -1,13 +1,14 @@
+import csv
 import os
 import re
-import csv
-
 from pathlib import Path
-from PyQt5.QtCore import QThread, pyqtSignal
+
 from docx import Document
+from PyQt5.QtCore import QThread, pyqtSignal
 
 
 class TitlePageAnalysis(QThread):
+    """Анализ Титульных листов _docx_ с сохранением данных в _csv_ файл."""
     status_update = pyqtSignal(str)
     progress_update = pyqtSignal(int)
 

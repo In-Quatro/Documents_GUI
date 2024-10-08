@@ -1,12 +1,11 @@
 import csv
-import traceback
-from datetime import datetime, timedelta
 import os
-from pathlib import Path
 import re
+from datetime import datetime, timedelta
+from pathlib import Path
 
-import openpyxl
 from PyQt5.QtCore import QThread, pyqtSignal
+import openpyxl
 
 
 class ActIncident(QThread):
