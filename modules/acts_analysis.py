@@ -40,7 +40,8 @@ class ActsAnalysis(QThread):
                         wb_sheet = wb['Лист1']
                         self.file_processing(wb_sheet, file_name)
                 self.progress_update.emit(100)
-                self.status_update.emit(f'Готово. Обработано файлов: {quantity}')
+                self.status_update.emit(
+                    f'Готово. Обработано файлов: {quantity}')
         except Exception as e:
             print(e)
 

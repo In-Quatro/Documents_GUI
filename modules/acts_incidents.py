@@ -30,7 +30,8 @@ class ActIncident(QThread):
             self.status_update.emit('Идет создание актов, ожидайте...')
             acts = os.listdir(self.path_input_acts_incidents)
             if not acts:
-                self.status_update.emit('Нет актов в папке для внесения заявок')
+                self.status_update.emit(
+                    'Нет актов в папке для внесения заявок')
             else:
                 self.create_list_incident(self.path_csv_data_incidents)
                 self.create_acts_with_incident(acts)
@@ -41,7 +42,9 @@ class ActIncident(QThread):
         except Exception:
             self.update_status(f'Ошибка')
 
-    def check_header(self, fieldnames):
+    @staticmethod
+    def check_header(fieldnames):
+        """Проверка наличия полей в _csv_ файле."""
         fieldnames_ = {'МО', 'ТТ', 'Номер заявки', 'Время назначения',
                        'Время в отложено', 'Время обработки', 'Время закрытия',
                        'Время ограничения', 'Коэффициент'}
@@ -52,12 +55,9 @@ class ActIncident(QThread):
         """Функция для создания листа с заявками из CSV файла."""
         with open(data, newline='') as csvfile:
             rows = csv.DictReader(csvfile, delimiter=';')
-            # if self.check_header(rows.fieldnames):
             for row in rows:
                 self.incidents.append(row)
                 self.points.append(row['ТТ'])
-            # else:
-
 
     def create_acts_with_incident(self, acts):
         """Функция для создания актов с заявками."""
@@ -98,8 +98,9 @@ class ActIncident(QThread):
         if self.incidents:
             for i, row in enumerate(self.incidents):
                 if (
-                    (row['ТТ'] == point and
-                     start <= self.str_to_date(row['Время назначения']) <= end)
+                        (row['ТТ'] == point and
+                         start <= self.str_to_date(
+                                    row['Время назначения']) <= end)
                 ):
                     sheet[f'G{idx}'] = row['Номер заявки']
                     sheet[f'H{idx}'] = row['Время в отложено']

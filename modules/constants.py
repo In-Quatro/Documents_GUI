@@ -1,4 +1,4 @@
-SIGNATURES_PARTIES ='Подписи сторон:'
+SIGNATURES_PARTIES = 'Подписи сторон:'
 EXECUTIVE = 'ИСПОЛНИТЕЛЬ:'
 MEDICAL_ORGANIZATION = 'МО:'
 SIGNATURE_MEDICAL_ORGANIZATION = '_________________ /___________________'

@@ -1,9 +1,9 @@
-from PyQt5 import uic, QtGui
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QDialog
-
+import subprocess
 import sys
 from functools import partial
+
+from PyQt5 import uic, QtGui
+from PyQt5.QtWidgets import QApplication, QMainWindow, QFileDialog, QDialog
 
 from modules.acts_analysis import *
 from modules.acts_create import *
@@ -15,6 +15,7 @@ from modules.title_page_analysis import *
 
 class MainWindow(QMainWindow):
     """"Главное окно."""
+
     def __init__(self):
         super(MainWindow, self).__init__()
         uic.loadUi(self.resource_path('ui/main.ui'), self)
@@ -344,6 +345,7 @@ class MainWindow(QMainWindow):
 
 class Dialog_acts(QDialog):
     """Диалоговое окно."""
+
     def __init__(self):
         super(Dialog_acts, self).__init__()
         uic.loadUi(self.resource_path(r'ui\dialog_acts.ui'), self)
