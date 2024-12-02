@@ -2,7 +2,7 @@ import csv
 import os
 import re
 from pathlib import Path
-
+from datetime import date
 from PyQt5.QtCore import QThread, pyqtSignal
 import openpyxl
 
@@ -88,6 +88,13 @@ class ActsAnalysis(QThread):
 
             writer.writerow(data)
 
+    @staticmethod
+    def date_to_str(month):
+        """Преобразует datetime в строку."""
+        if isinstance(month, date):
+            return month.strftime('%d.%m.%Y')
+        return month
+
     def file_processing(self, sheet, file):
         """Просмотр файла."""
         title = None
@@ -100,8 +107,8 @@ class ActsAnalysis(QThread):
                 if re.search(r'\*\d{3}\-\d{4}\*', obj):
                     point = obj
                     type_point = sheet[f'C{ir}'].value
-                    month_1_start = sheet[f'D{ir}'].value
-                    month_1_end = sheet[f'E{ir}'].value
+                    month_1_start = self.date_to_str(sheet[f'D{ir}'].value)
+                    month_1_end = self.date_to_str(sheet[f'E{ir}'].value)
                     month_2_start, month_2_end = "-", "-"
                     month_3_start, month_3_end = "-", "-"
 
@@ -113,19 +120,20 @@ class ActsAnalysis(QThread):
 
                     if (not sheet.cell(ir + 1, 2).value
                             and sheet.cell(ir + 1, column=4).value):
-                        month_2_start = sheet[f'D{ir + 1}'].value
-                        month_2_end = sheet[f'E{ir + 1}'].value
+                        month_2_start = self.date_to_str(sheet[f'D{ir + 1}'].value)
+                        month_2_end = self.date_to_str(sheet[f'E{ir + 1}'].value)
 
                     if (not sheet.cell(ir + 2, 1).value
                             and sheet.cell(ir + 2, column=4).value
                             and month_2_start != "-"):
-                        month_3_start = sheet[f'D{ir + 2}'].value
-                        month_3_end = sheet[f'E{ir + 2}'].value
+                        month_3_start = self.date_to_str(sheet[f'D{ir + 2}'].value)
+                        month_3_end = self.date_to_str(sheet[f'E{ir + 2}'].value)
 
                     signature = sheet[f'J{sheet.max_row - 4}'].value
                     months = [month_1_start, month_1_end,
                               month_2_start, month_2_end,
                               month_3_start, month_3_end]
+                    print(months)
                     months = self.check_month(*months)
                     data_to_write = (point, type_point, title, address,
                                      *months, signature, file)
