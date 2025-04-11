@@ -133,7 +133,6 @@ class ActsAnalysis(QThread):
                     months = [month_1_start, month_1_end,
                               month_2_start, month_2_end,
                               month_3_start, month_3_end]
-                    print(months)
                     months = self.check_month(*months)
                     data_to_write = (point, type_point, title, address,
                                      *months, signature, file)

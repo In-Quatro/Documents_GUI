@@ -60,7 +60,7 @@ class ActsCreate(QThread):
         return result
 
     @staticmethod
-    def fill_month_data(self, sheet, idx_row, i, month_start, month_end):
+    def fill_month_data(sheet, idx_row, i, month_start, month_end):
         """Заполнение строк датами, '-' и 1."""
         if month_start != '-':
             sheet[f'D{idx_row + i}'] = month_start

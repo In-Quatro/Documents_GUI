@@ -79,7 +79,7 @@ pip install -r requirements.txt
 ```
 Для автосборки готовой программы в формате `*.exe` выполнить команду в консоли:
 ```
-pyinstaller --noconfirm --onefile --windowed --icon ".\ui\icons\logo.ico" --add-data ".\ui;ui/" --add-data ".\modules;modules/"  ".\main.py"
+pyinstaller --noconfirm --onefile --windowed --name "dit_Documents" --icon ".\ui\icons\logo.ico" --add-data ".\ui;ui/" --add-data ".\modules;modules/"  ".\main.py"
 ```
 ### Технологии
  - Python 3.9
